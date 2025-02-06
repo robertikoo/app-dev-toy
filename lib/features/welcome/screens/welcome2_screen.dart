@@ -1,10 +1,12 @@
+import 'package:app/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../widgets/outlined_button.dart';
-import 'welcome2_screen.dart';
+import '../../../shared/widgets/outlined_button.dart';
+import '../../chat/screens/chattray_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+
+class Welcome2Screen extends StatelessWidget {
+  const Welcome2Screen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +22,23 @@ class WelcomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 200),
             CustomOutlinedButton(
-              text: 'Empezar',
+              text: 'Iniciar sesión',
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Welcome2Screen()),
+                  MaterialPageRoute(builder: (context) => ChatTrayScreen()),
                 );
               },
+
+
+            ),
+            const SizedBox(height: 20),
+            CustomOutlinedButton(
+              text: 'Registrarse',
+              onPressed: () {
+                // Add your button action here
+              },
+
             ),
           ],
         ),
