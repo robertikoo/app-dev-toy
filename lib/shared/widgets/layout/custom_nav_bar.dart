@@ -1,19 +1,52 @@
 import 'package:flutter/material.dart';
 
-class CustomBottomNavBar extends StatelessWidget {
+class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
 
   @override
+  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
+}
+
+class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
+  int _selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    // Get current route to highlight the correct tab
-    final String currentRoute = ModalRoute.of(context)?.settings.name ?? '/home';
-    
     return BottomNavigationBar(
-      currentIndex: _getSelectedIndex(currentRoute),
+      type: BottomNavigationBarType.fixed,
+      currentIndex: _selectedIndex,
+      onTap: (int index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+
+        switch (index) {
+          case 0:
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/home', (route) => false);
+            break;
+          case 1:
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/calendar', (route) => false);
+            break;
+          case 2:
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/chat', (route) => false);
+            break;
+          case 3:
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/profile', (route) => false);
+            break;
+        }
+      },
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Inicio',
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month),
+          label: 'Calendar',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.chat),
@@ -21,35 +54,9 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Perfil',
+          label: 'Profile',
         ),
       ],
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/home');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/chat');
-            break;
-          case 2:
-            Navigator.pushReplacementNamed(context, '/profile');
-            break;
-        }
-      },
     );
-  }
-
-  int _getSelectedIndex(String currentRoute) {
-    switch (currentRoute) {
-      case '/home':
-        return 0;
-      case '/chat':
-        return 1;
-      case '/profile':
-        return 2;
-      default:
-        return 0;
-    }
   }
 }
