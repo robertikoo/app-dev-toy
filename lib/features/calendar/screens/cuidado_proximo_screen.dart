@@ -1,35 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../../shared/layouts/main_layout.dart'; // SE AGREGÓ MainLayout
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => CuidadoProximoScreen(),
-        '/home': (context) => HomeScreen(),
-        '/calendar': (context) => CalendarScreen(),
-        '/chat': (context) => ChatScreen(),
-        '/profile': (context) => ProfileScreen(),
-      },
-    );
-  }
-}
 
 class CuidadoProximoScreen extends StatelessWidget {
   const CuidadoProximoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return MainLayout(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
         title: SizedBox(
+
           height: 40,
           child: Image.asset('assets/logo_or_15.png', fit: BoxFit.contain),
         ),
@@ -47,10 +31,11 @@ class CuidadoProximoScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
+
             children: [
               GestureDetector(
                 onTap: () {
@@ -154,77 +139,7 @@ class CuidadoProximoScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacementNamed(context, '/home');
-              break;
-            case 1:
-              Navigator.pushReplacementNamed(context, '/calendar');
-              break;
-            case 2:
-              Navigator.pushReplacementNamed(context, '/chat');
-              break;
-            case 3:
-              Navigator.pushReplacementNamed(context, '/profile');
-              break;
-          }
-        },
-      ),
-    );
-  }
-}
-
-// Pantalla Home
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: Center(child: Text('Home Screen')),
-    );
-  }
-}
-
-// Pantalla Calendar
-class CalendarScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Calendar')),
-      body: Center(child: Text('Calendar Screen')),
-    );
-  }
-}
-
-// Pantalla Chat
-class ChatScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Chat')),
-      body: Center(child: Text('Chat Screen')),
-    );
-  }
-}
-
-// Pantalla Profile
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('Profile Screen')),
+      )
     );
   }
 }
