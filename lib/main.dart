@@ -7,6 +7,7 @@ import 'features/chat/services/chat_service.dart';
 import 'features/home/screens/home_screen.dart';
 import 'features/chat/screens/chattray_screen.dart';
 import 'features/profile/screens/profile_screen.dart';
+import 'features/calendar/screens/calendar_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,13 +25,13 @@ class MainApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<ChatService, ChatProvider>(
           create: (context) => ChatProvider(context.read<ChatService>()),
-          update: (context, chatService, previous) => 
-            previous ?? ChatProvider(chatService),
+          update: (context, chatService, previous) =>
+              previous ?? ChatProvider(chatService),
         ),
         ChangeNotifierProxyProvider<ChatService, ChatThreadProvider>(
           create: (context) => ChatThreadProvider(context.read<ChatService>()),
-          update: (context, chatService, previous) => 
-            previous ?? ChatThreadProvider(chatService),
+          update: (context, chatService, previous) =>
+              previous ?? ChatThreadProvider(chatService),
         ),
       ],
       child: MaterialApp(
@@ -38,12 +39,11 @@ class MainApp extends StatelessWidget {
         routes: {
           '/': (context) => const WelcomeScreen(),
           '/home': (context) => const HomeScreen(),
+          '/calendar': (context) => const CalendarScreen(),
           '/chat': (context) => const ChatTrayScreen(),
           '/profile': (context) => const ProfileScreen(),
         },
       ),
     );
-
-
   }
 }
