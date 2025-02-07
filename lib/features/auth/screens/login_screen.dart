@@ -1,4 +1,6 @@
+import 'package:app/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import '/features/auth/screens/recovery_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -77,8 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  // Add login logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
                 },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -97,8 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  // Add forgot password logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecoveryScreen()),
+                  );
                 },
+
                 child: const Text(
                   '¿Olvidaste tu contraseña?',
                   style: TextStyle(
