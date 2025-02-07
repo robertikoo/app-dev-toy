@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../shared/widgets/outlined_button.dart';
 import '../../chat/screens/chattray_screen.dart';
+import '../../../features/auth/screens/register_screen.dart';
 
 
 class Welcome2Screen extends StatelessWidget {
@@ -26,7 +27,7 @@ class Welcome2Screen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatTrayScreen()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
               },
 
@@ -36,9 +37,11 @@ class Welcome2Screen extends StatelessWidget {
             CustomOutlinedButton(
               text: 'Registrarse',
               onPressed: () {
-                // Add your button action here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                );
               },
-
             ),
           ],
         ),
