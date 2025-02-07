@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/event_cart.dart'; // Asegúrate de tener la importación correcta
 import 'package:table_calendar/table_calendar.dart';
+import 'package:app/features/calendar/widgets/event.dart'; // Ajusta la importación
+import 'package:app/features/calendar/screens/cuidado_proximo_screen.dart'; // Ajusta la ruta según tu estructura
+
 class CalendarScreen extends StatelessWidget {
   static const String name = 'calendar_screen';
   static const String route = '/calendar';
@@ -11,39 +13,35 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Eliminar el ícono de retroceso
+        automaticallyImplyLeading: false, // Desactiva el botón de "atrás"
         title: Image.asset(
-          'assets/logo_or_15.png', // Ruta del logo
-          height: 40, // Ajusta el tamaño según sea necesario
+          'assets/logo_or_15.png', // Reemplaza con tu logo
+          height: 40,
         ),
-        centerTitle: true, // Centrar el logo
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
-              // Acción para notificaciones
+              // Acción para las notificaciones
             },
           ),
         ],
       ),
-      body: const _CalendarView(),
-      bottomNavigationBar: _BottomNavBar(),
+      body: _CalendarView(), // Cuerpo principal con el calendario
+      bottomNavigationBar: _BottomNavBar(), // Barra de navegación inferior
     );
   }
 }
 
-
-
 class _CalendarView extends StatelessWidget {
-  const _CalendarView();
-
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView( // Esto hace que el contenido sea desplazable
+    return SingleChildScrollView(
       child: Column(
         children: [
           const SizedBox(height: 10),
-          // Filtros de calendario
+          // Filtros de botones
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -53,22 +51,28 @@ class _CalendarView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-
           // Calendario
-          Container( // Eliminamos 'Expanded' y ponemos un contenedor con un tamaño fijo
+          Container(
             padding: const EdgeInsets.all(16),
             child: _CalendarWidget(),
           ),
-
-          // Tarjeta de evento con avatar
-          const EventCard(
+          // Tarjeta de evento
+          EventCard(
             title: "Cuidado Emilio",
             dateRange: "4 - 6 de Febrero",
-            avatar: CircleAvatar(
+            avatar: const CircleAvatar(
               radius: 30,
               backgroundColor: Colors.grey,
-              child: const Icon(Icons.image, color: Colors.white),
+              child: Icon(Icons.image, color: Colors.white),
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CuidadoProximoScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -85,12 +89,13 @@ class _CalendarWidget extends StatelessWidget {
       focusedDay: DateTime.now(),
       calendarFormat: CalendarFormat.month,
       selectedDayPredicate: (day) {
+        // Marca los días específicos
         return (day.day == 4 && day.month == 2) ||
-               (day.day == 5 && day.month == 2) ||
-               (day.day == 6 && day.month == 2);
+            (day.day == 5 && day.month == 2) ||
+            (day.day == 6 && day.month == 2);
       },
       calendarStyle: CalendarStyle(
-        selectedDecoration: BoxDecoration(
+        selectedDecoration: const BoxDecoration(
           color: Colors.blue,
           shape: BoxShape.circle,
         ),
@@ -100,7 +105,7 @@ class _CalendarWidget extends StatelessWidget {
         ),
       ),
       onDaySelected: (selectedDay, focusedDay) {
-        // Acción cuando se selecciona una fecha
+        // Acción al seleccionar un día (opcional)
       },
     );
   }
@@ -118,7 +123,7 @@ class _FilterButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: ElevatedButton(
         onPressed: () {
-          // Acción del filtro
+          // Acción para el botón de filtro (aún no definida)
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: selected ? Colors.blue : Colors.grey[300],
@@ -140,7 +145,7 @@ class _BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.chat), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],
-      currentIndex: 1, // Índice del calendario
+      currentIndex: 1, // Establece el índice actual en CalendarScreen
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
       showSelectedLabels: false,
