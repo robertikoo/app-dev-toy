@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import '../widgets/welcome_header.dart';
-import '../widgets/search_card.dart';
 import '../widgets/feature_card.dart';
 import '../../../shared/layouts/main_layout.dart';
 import 'package:app/features/request/screens/tipo_cuidado_screen.dart'; // Asegúrate de que la ruta sea correcta
+import '../widgets/search_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _showButtons = false;
+  String _searchQuery = ""; // Almacenará la búsqueda actual
+
+  // Esta función se activa cuando el texto cambia en el TextField
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query;
+      _showButtons = query.isNotEmpty;  // Mostrar botones solo si hay texto
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +32,8 @@ class HomeScreen extends StatelessWidget {
           children: [
             const WelcomeHeader(userName: 'Marcela'),
             const SizedBox(height: 16),
-            const SearchCard(),
+            // Usamos SearchCard que ahora recibe un callback para el cambio de texto
+            SearchCard(onSearchChanged: _onSearchChanged),
             const SizedBox(height: 16),
             const FeatureCard(
               title: 'Eventos',
@@ -36,35 +53,36 @@ class HomeScreen extends StatelessWidget {
               variant: FeatureCardVariant.outlined,
             ),
             const SizedBox(height: 16),
-            // Vista previa del tipo de cuidado con efecto hover
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CareTypeSelectionScreen()),
-                );
-              },
-              child: Column(
-                children: [
-                  HoverEffectButton(
-                    text: 'Cuidado Permanente',
-                    icon: Icons.calendar_today,
-                    defaultColor: Colors.white,
-                    hoverColor: Colors.grey[200]!, // Cambio sutil en hover
-                    textColor: const Color(0xFF4C44D4),
-                    borderColor: const Color(0xFF4C44D4),
-                  ),
-                  const SizedBox(height: 16),
-                  HoverEffectButton(
-                    text: 'Cuidado Esporádico',
-                    icon: Icons.volunteer_activism,
-                    defaultColor: const Color(0xFF4C44D4),
-                    hoverColor: const Color(0xFF6A63E0), // Color más claro en hover
-                    textColor: Colors.white,
-                  ),
-                ],
+            // Solo muestra los botones si _showButtons es true
+            if (_showButtons)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CareTypeSelectionScreen()),
+                  );
+                },
+                child: Column(
+                  children: [
+                    HoverEffectButton(
+                      text: 'Cuidado Permanente',
+                      icon: Icons.calendar_today,
+                      defaultColor: Colors.white,
+                      hoverColor: Colors.grey[200]!,
+                      textColor: const Color(0xFF4C44D4),
+                      borderColor: const Color(0xFF4C44D4),
+                    ),
+                    const SizedBox(height: 16),
+                    HoverEffectButton(
+                      text: 'Cuidado Esporádico',
+                      icon: Icons.volunteer_activism,
+                      defaultColor: const Color(0xFF4C44D4),
+                      hoverColor: const Color(0xFF6A63E0),
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -72,7 +90,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// 🔹 Widget reutilizable con efecto hover
 class HoverEffectButton extends StatefulWidget {
   final String text;
   final IconData icon;
