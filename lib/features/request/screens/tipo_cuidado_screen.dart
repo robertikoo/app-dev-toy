@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../shared/layouts/main_layout.dart';
+import 'package:app/features/home/screens/home_screen.dart';  // Asegúrate de importar la pantalla HomeScreen.
 
 class CareTypeSelectionScreen extends StatelessWidget {
   const CareTypeSelectionScreen({super.key});
@@ -10,8 +11,23 @@ class CareTypeSelectionScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start, // Alineado a la izquierda
           children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    // Navegar hacia la pantalla de inicio
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()), // Asegúrate de tener esta pantalla importada
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             const Text(
               '¿Qué tipo de cuidado estás buscando?',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
