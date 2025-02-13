@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../shared/layouts/main_layout.dart';
-import 'package:app/features/home/screens/home_screen.dart';  // Asegúrate de importar la pantalla HomeScreen.
+import 'package:app/features/home/screens/home_screen.dart'; // Asegúrate de tener esta pantalla importada
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CareTypeSelectionScreen extends StatelessWidget {
   const CareTypeSelectionScreen({super.key});
@@ -21,7 +22,7 @@ class CareTypeSelectionScreen extends StatelessWidget {
                     // Navegar hacia la pantalla de inicio
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()), // Asegúrate de tener esta pantalla importada
+                      MaterialPageRoute(builder: (context) => HomeScreen()), // Aquí navegas a HomeScreen
                     );
                   },
                 ),
@@ -35,7 +36,7 @@ class CareTypeSelectionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             CareTypeButton(
-              icon: Icons.calendar_today,
+              icon: SvgPicture.asset('assets/cuidado_permanente.svg'),  // Passing SvgPicture
               text: 'Cuidado Permanente',
               backgroundColor: Colors.white,
               hoverColor: Colors.grey[200]!,
@@ -44,7 +45,7 @@ class CareTypeSelectionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             CareTypeButton(
-              icon: Icons.volunteer_activism,
+              icon: SvgPicture.asset('assets/cuidado_permanente.svg'),  // Passing SvgPicture
               text: 'Cuidado Esporádico',
               backgroundColor: const Color(0xFF4C44D4),
               hoverColor: const Color(0xFF6A63E0),
@@ -57,9 +58,8 @@ class CareTypeSelectionScreen extends StatelessWidget {
   }
 }
 
-// 🔹 Botón con efecto hover
 class CareTypeButton extends StatefulWidget {
-  final IconData icon;
+  final Widget icon;  // Change type to Widget to handle both Icon and SvgPicture
   final String text;
   final Color backgroundColor;
   final Color hoverColor;
@@ -107,7 +107,7 @@ class _CareTypeButtonState extends State<CareTypeButton> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(widget.icon, color: widget.textColor, size: 24),
+            widget.icon,  // This will render either an Icon or SvgPicture
             const SizedBox(width: 8),
             Text(
               widget.text,
