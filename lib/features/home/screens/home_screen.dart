@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/welcome_header.dart';
-import '../widgets/feature_card.dart';
 import '../../../shared/layouts/main_layout.dart';
 import 'package:app/features/request/screens/tipo_cuidado_screen.dart'; // Asegúrate de que la ruta sea correcta
 import '../widgets/search_card.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,144 +15,176 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showButtons = false;
-  String _searchQuery = ""; // Almacenará la búsqueda actual
+  String _searchQuery = "";
 
-  // Esta función se activa cuando el texto cambia en el TextField
   void _onSearchChanged(String query) {
     setState(() {
       _searchQuery = query;
-      _showButtons = query.isNotEmpty;  // Mostrar botones solo si hay texto
+      _showButtons = query.isNotEmpty;
+
+      if (query.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CareTypeSelectionScreen()),
+        );
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const WelcomeHeader(userName: 'Marcela'),
-            const SizedBox(height: 16),
-            // Usamos SearchCard que ahora recibe un callback para el cambio de texto
-            SearchCard(onSearchChanged: _onSearchChanged),
-            const SizedBox(height: 16),
-            const FeatureCard(
-              title: 'Eventos',
-              subtitle: 'Descubre los próximos eventos',
-              variant: FeatureCardVariant.dashed,
-            ),
-            const SizedBox(height: 16),
-            const FeatureCard(
-              title: 'Centro de Ayuda',
-              subtitle: '¿Necesitas ayuda? Estamos aquí para ti',
-              variant: FeatureCardVariant.outlined,
-            ),
-            const SizedBox(height: 16),
-            const FeatureCard(
-              title: 'Guía de Inicio',
-              subtitle: 'Aprende a usar la aplicación',
-              variant: FeatureCardVariant.outlined,
-            ),
-            const SizedBox(height: 16),
-            // Solo muestra los botones si _showButtons es true
-            if (_showButtons)
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CareTypeSelectionScreen()),
-                  );
-                },
-                child: Column(
-                  children: [
-                    HoverEffectButton(
-                      text: 'Cuidado Permanente',
-                      icon: Icons.calendar_today,
-                      defaultColor: Colors.white,
-                      hoverColor: Colors.grey[200]!,
-                      textColor: const Color(0xFF4C44D4),
-                      borderColor: const Color(0xFF4C44D4),
-                    ),
-                    const SizedBox(height: 16),
-                    HoverEffectButton(
-                      text: 'Cuidado Esporádico',
-                      icon: Icons.volunteer_activism,
-                      defaultColor: const Color(0xFF4C44D4),
-                      hoverColor: const Color(0xFF6A63E0),
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const WelcomeHeader(userName: 'Marcela'),
+                      Image.asset('../../../../assets/user.png',
+                          height: 40, width: 40),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text("Comencemos",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  // Franja con SearchCard ajustada al ancho completo
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: SearchCard(onSearchChanged: _onSearchChanged),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text("Eventos Próximos",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  _buildEventCard(),
+                  const SizedBox(height: 16),
+                  const Text("Solución a tus dudas!",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
+                  _buildFeatureCard(
+                    icon: Icons.support_agent,
+                    text: 'Centro de ayuda',
+                  ),
+                  const SizedBox(height: 16),
+                  const Text("Somos parte de un Equipo",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  _buildFeatureCardGuia(
+                    icon: Icons.menu_book,
+                    text: 'Guía de nuestro método',
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
-          ],
+            ),
+          ),
         ),
       ),
     );
   }
-}
 
-class HoverEffectButton extends StatefulWidget {
-  final String text;
-  final IconData icon;
-  final Color defaultColor;
-  final Color hoverColor;
-  final Color textColor;
-  final Color? borderColor;
-
-  const HoverEffectButton({
-    required this.text,
-    required this.icon,
-    required this.defaultColor,
-    required this.hoverColor,
-    required this.textColor,
-    this.borderColor,
-    super.key,
-  });
-
-  @override
-  _HoverEffectButtonState createState() => _HoverEffectButtonState();
-}
-
-class _HoverEffectButtonState extends State<HoverEffectButton> {
-  bool isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+  Widget _buildEventCard() {
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      radius: Radius.circular(12),
+      dashPattern: [6, 3], // Ajusta el patrón de los puntos
+      color: Colors.black,
+      strokeWidth: 1,
+      child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isHovered ? widget.hoverColor : widget.defaultColor,
-          borderRadius: BorderRadius.circular(12),
-          border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
+        height: 100, // Ajusta la altura según necesites
+        alignment: Alignment.center, // Centrar el contenido
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Centrar en el eje horizontal
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Centrar en el eje vertical
           children: [
-            Icon(widget.icon, color: widget.textColor, size: 24),
-            const SizedBox(width: 8),
+            Icon(Icons.calendar_today, color: Colors.black),
+            SizedBox(width: 8), // Espacio entre el icono y el texto
             Text(
-              widget.text,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: widget.textColor,
-              ),
+              'No hay cuidados pendientes',
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
             ),
           ],
         ),
       ),
     );
   }
-}
+
+  // Tarjeta para "Centro de ayuda"
+ 
+
+  Widget _buildFeatureCard({required IconData icon, required String text}) {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.black),
+          const SizedBox(width: 8),
+          RichText(
+            text: TextSpan(
+              text: 'Centro de ', // Texto normal antes de "ayuda"
+              style: TextStyle(fontSize: 16),
+              children: [
+                TextSpan(
+                  text: 'ayuda', // La palabra "ayuda" en formato especial
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic, // Cursiva
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+} 
+
+
+
+  // Tarjeta para "Guía de nuestro método"
+  Widget _buildFeatureCardGuia({required IconData icon, required String text}) {
+    return Container(
+      width: double.infinity,
+      height: 100,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.black),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
