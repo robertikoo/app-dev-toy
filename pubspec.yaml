@@ -9,10 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.9
   provider: ^6.0.5
   timeago: ^3.0.2
   table_calendar: ^3.0.10
+  flutter_svg: ^2.0.10  # Añadir esta línea
+  xml: ^6.3.0           # Actualiza la versión de xml
+  dotted_border: ^2.1.0
+ # Actualiza a la versión que necesita flutter_svgga esta línea si no está presente
 
 
 dev_dependencies:
@@ -20,8 +23,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+
 flutter:
   uses-material-design: true
   assets:
     - assets/logo.svg
     - assets/logo_or_15.png
+    - assets/cuidado_esporadico.svg
+    - assets/cuidado_permanente.svg
