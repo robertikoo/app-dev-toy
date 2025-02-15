@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../shared/layouts/main_layout.dart';
 
-class CuidadoEsporadicoWidget extends StatelessWidget {
+class CuidadoEsporadicoWidget extends StatefulWidget {
   const CuidadoEsporadicoWidget({super.key});
 
   @override
+  _CuidadoEsporadicoWidgetState createState() => _CuidadoEsporadicoWidgetState();
+}
+
+class _CuidadoEsporadicoWidgetState extends State<CuidadoEsporadicoWidget> {
+  bool isDondeExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      appBar: AppBar(title: const Text("Cuidado Esporádico")),
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(title: const Text("")),
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildHeader(), // ✅ Rectángulo con borde y contenido
+              _buildHeader(),
               const SizedBox(height: 16),
-              _buildOptionButton(Icons.location_on, "Dónde", "Dirección"),
+              _buildDropdownButton(Icons.location_on, "Dónde", "Salitrera B, Copiapó", [
+                "Salitrera Bellavista, Copiapó",
+                "Salitrera Santa Ana, Copiapó",
+                "Salitrera Independencia, Copiapó",
+                "Salitrera Estadio, Copiapó"
+              ]),
               _buildOptionButton(Icons.calendar_today, "Cuándo", "Semana"),
               _buildOptionButton(Icons.access_time, "Hora", "Inicio - término"),
               _buildOptionButton(Icons.person, "Para quién", "Agregar niño o niña"),
               _buildOptionButton(Icons.edit, "Agregar nota", "Opcional"),
               const SizedBox(height: 20),
               SizedBox(
-                width: 250, // Reducir el tamaño del botón
+                width: MediaQuery.of(context).size.width * 0.6,
                 child: OutlinedButton(
-                  onPressed: () => _solicitarCuidado(context),
+                  onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -45,65 +56,101 @@ class CuidadoEsporadicoWidget extends StatelessWidget {
     );
   }
 
-  // ✅ Rectángulo con borde, icono SVG a la izquierda y texto con colores replicados
   Widget _buildHeader() {
     return Container(
-      width: double.infinity, // Asegura que ocupe todo el ancho
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF4C44D4), // Color de fondo replicado
-        borderRadius: BorderRadius.circular(10), // Esquinas redondeadas
-        border: Border.all(color: const Color(0xFF4C44D4), width: 2), // Borde con el mismo color
+        color: const Color(0xFF4C44D4),
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Center( // Centrar el contenido
-        child: Row(
-          mainAxisSize: MainAxisSize.min, // El Row solo toma el espacio necesario
-          children: [
-            SvgPicture.asset(
-              'assets/cuidado_esporadico.svg',
-              height: 50, // Ajusta el tamaño del icono
-            ),
-            const SizedBox(width: 8), // Espacio entre el icono y el texto
-            const Text(
-              "Cuidado Esporádico",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white, // Texto en blanco para resaltar
-              ),
-            ),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/cuidado_esporadico.svg',
+            height: 50,
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            "Cuidado Esporádico",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ],
       ),
     );
   }
 
-  // ✅ Botón de opción con bordes más redondeados y etiquetas de texto
+  Widget _buildDropdownButton(IconData icon, String title, String selected, List<String> options) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => setState(() => isDondeExpanded = !isDondeExpanded),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black54),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(icon, color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Text(selected, style: const TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ),
+        ),
+        if (isDondeExpanded)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black54),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: options.map((option) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(option, style: const TextStyle(color: Colors.grey)),
+                ),
+              )).toList(),
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget _buildOptionButton(IconData icon, String title, String subtitle) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black54),
-        borderRadius: BorderRadius.circular(20), // Mayor curvatura en los bordes
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        trailing: Text(
-          subtitle,
-          style: TextStyle(
-            fontWeight: FontWeight.w300, // Fuente más ligera
-            color: Colors.grey[600], // Color gris más tenue
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: Colors.black54),
+              const SizedBox(width: 8),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
           ),
-        ), // Mover la palabra a la derecha con estilo placeholder
-        onTap: () {
-          // Acción al tocar el botón
-        },
+          Text(subtitle, style: const TextStyle(color: Colors.grey)),
+        ],
       ),
     );
-  }
-
-  void _solicitarCuidado(BuildContext context) {
-    // Lógica para solicitar cuidado
   }
 }
