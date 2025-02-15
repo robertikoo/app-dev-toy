@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../shared/layouts/main_layout.dart';
 import 'package:app/features/home/screens/home_screen.dart'; // Asegúrate de tener esta pantalla importada
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:app/features/request/widgets/cuidado_esporadico.dart';
 
 class CareTypeSelectionScreen extends StatelessWidget {
   const CareTypeSelectionScreen({super.key});
@@ -44,27 +45,34 @@ class CareTypeSelectionScreen extends StatelessWidget {
               borderColor: const Color(0xFF4C44D4),
             ),
             const SizedBox(height: 16),
-            CareTypeButton(
-              icon: SvgPicture.asset('assets/cuidado_permanente.svg'),  // Passing SvgPicture
-              text: 'Cuidado Esporádico',
-              backgroundColor: const Color(0xFF4C44D4),
-              hoverColor: const Color(0xFF6A63E0),
-              textColor: Colors.white,
-            ),
+       CareTypeButton(
+  icon: SvgPicture.asset('assets/cuidado_esporadico.svg'),
+  text: 'Cuidado Esporádico',
+  backgroundColor: const Color(0xFF4C44D4),
+  hoverColor: const Color(0xFF6A63E0),
+  textColor: Colors.white,
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CuidadoEsporadicoWidget()),
+    );
+  },
+),
+
           ],
         ),
       ),
     );
   }
 }
-
 class CareTypeButton extends StatefulWidget {
-  final Widget icon;  // Change type to Widget to handle both Icon and SvgPicture
+  final Widget icon;
   final String text;
   final Color backgroundColor;
   final Color hoverColor;
   final Color textColor;
   final Color? borderColor;
+  final VoidCallback? onPressed; // <-- Agregamos el onPressed
 
   const CareTypeButton({
     required this.icon,
@@ -73,6 +81,7 @@ class CareTypeButton extends StatefulWidget {
     required this.hoverColor,
     required this.textColor,
     this.borderColor,
+    this.onPressed, // <-- Añadimos el onPressed aquí
     super.key,
   });
 
@@ -88,36 +97,39 @@ class _CareTypeButtonState extends State<CareTypeButton> {
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isHovered ? widget.hoverColor : widget.backgroundColor,
-          borderRadius: BorderRadius.circular(12),
-          border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.icon,  // This will render either an Icon or SvgPicture
-            const SizedBox(width: 8),
-            Text(
-              widget.text,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: widget.textColor,
+      child: GestureDetector(
+        onTap: widget.onPressed, // <-- Ahora puede ejecutar la función
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: isHovered ? widget.hoverColor : widget.backgroundColor,
+            borderRadius: BorderRadius.circular(12),
+            border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widget.icon,
+              const SizedBox(width: 8),
+              Text(
+                widget.text,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: widget.textColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
