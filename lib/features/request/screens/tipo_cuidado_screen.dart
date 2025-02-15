@@ -4,6 +4,7 @@ import 'package:app/features/home/screens/home_screen.dart'; // Asegúrate de te
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:app/features/request/widgets/cuidado_esporadico.dart';
 
+
 class CareTypeSelectionScreen extends StatelessWidget {
   const CareTypeSelectionScreen({super.key});
 
