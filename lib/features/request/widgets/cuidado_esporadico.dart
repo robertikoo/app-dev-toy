@@ -215,13 +215,39 @@ Widget _buildCalendarDropdown() {
         ),
         child: Column(
           children: [
+            // Frase agregada antes del calendario
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  children: [
+                    TextSpan(
+                      text: "¿",
+                      style: TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                    TextSpan(
+                      text: "Cuándo",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: " deseas tu cuidado?",
+                      style: TextStyle(fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
             TableCalendar(
+              calendarFormat: CalendarFormat.month, // Asegura que muestre el mes completo
+
               focusedDay: DateTime.now(),
               firstDay: DateTime.utc(2020, 1, 1),
               lastDay: DateTime.utc(2025, 12, 31),
-              startingDayOfWeek: StartingDayOfWeek.monday, // Inicia desde el lunes
+              startingDayOfWeek: StartingDayOfWeek.monday,
               selectedDayPredicate: (day) {
-                return markedDates.contains(day); // Marcar fechas específicas
+                return markedDates.contains(day);
               },
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
@@ -230,51 +256,51 @@ Widget _buildCalendarDropdown() {
               },
               calendarStyle: CalendarStyle(
                 todayDecoration: BoxDecoration(
-                  color: Colors.blue, // Color para el día actual
+                  color: Colors.blue,
                   shape: BoxShape.circle,
                 ),
                 selectedDecoration: BoxDecoration(
-                  color: Colors.orange, // Color para los días seleccionados
+                  color: Colors.orange,
                   shape: BoxShape.circle,
                 ),
-                outsideDaysVisible: false, // Ocultar los días fuera del mes actual
+                outsideDaysVisible: false,
               ),
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
-                  // Aquí marco los días específicos (4, 5, 6 de febrero de 2025)
                   if (day.day == 4 && day.month == 2 && day.year == 2025 ||
                       day.day == 5 && day.month == 2 && day.year == 2025 ||
                       day.day == 6 && day.month == 2 && day.year == 2025) {
                     return Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.grey, // Fondo gris para los días marcados
+                        color: Colors.grey,
                         shape: BoxShape.circle,
                       ),
                       child: Text(
                         '${day.day}',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold, // Negrita para los números
-                          color: Colors.white, // Números en blanco
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     );
                   }
-                  return null; // Otros días sin modificaciones
+                  return null;
                 },
               ),
             ),
             const SizedBox(height: 16),
-            // Aquí agregamos el botón "Siguiente" con ancho completo
+
+            // Botón "Siguiente" de ancho completo
             Container(
-              width: double.infinity, // Esto asegura que el botón ocupe todo el ancho
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   // Acción cuando se presiona el botón
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Fondo negro
-                  foregroundColor: Colors.white, // Texto blanco
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -289,6 +315,8 @@ Widget _buildCalendarDropdown() {
     ],
   );
 }
+
+
 
 
 
