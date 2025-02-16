@@ -1,60 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../../../shared/layouts/main_layout.dart'; // Importando el layout principal
 
 class CuidadoEsporadicoWidget extends StatefulWidget {
   const CuidadoEsporadicoWidget({super.key});
 
   @override
-  _CuidadoEsporadicoWidgetState createState() => _CuidadoEsporadicoWidgetState();
+  _CuidadoEsporadicoWidgetState createState() =>
+      _CuidadoEsporadicoWidgetState();
 }
 
 class _CuidadoEsporadicoWidgetState extends State<CuidadoEsporadicoWidget> {
   bool isDondeExpanded = false;
+  bool isCuandoExpanded = false;
+  String selectedCuando = "Semana";
+  DateTime? selectedDate;
+  final List<String> cuandoOptions = [
+    "Semana",
+    "Fin de semana",
+    "Día específico"
+  ];
+
+  final List<DateTime> markedDates = [
+    DateTime(2025, 2, 4),
+    DateTime(2025, 2, 5),
+    DateTime(2025, 2, 6),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 16),
-              _buildDropdownButton(Icons.location_on, "Dónde", "Salitrera B, Copiapó", [
-                "Salitrera Bellavista, Copiapó",
-                "Salitrera Santa Ana, Copiapó",
-                "Salitrera Independencia, Copiapó",
-                "Salitrera Estadio, Copiapó"
-              ]),
-              _buildOptionButton(Icons.calendar_today, "Cuándo", "Semana"),
-              _buildOptionButton(Icons.access_time, "Hora", "Inicio - término"),
-              _buildOptionButton(Icons.person, "Para quién", "Agregar niño o niña"),
-              _buildOptionButton(Icons.edit, "Agregar nota", "Opcional"),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    "Solicitar Cuidado",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  return MainLayout( // Usando el MainLayout sin el parámetro 'title'
+    child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildHeader(),
+            const SizedBox(height: 16), // Espacio entre el encabezado y el contenido
+            _buildDropdownButton(
+                Icons.location_on, "Dónde", "Salitrera B, Copiapó", [
+              "Salitrera Bellavista, Copiapó",
+              "Salitrera Santa Ana, Copiapó",
+              "Salitrera Independencia, Copiapó",
+              "Salitrera Estadio, Copiapó"
+            ]),
+            const SizedBox(height: 16), // Aquí agregamos el espacio entre "Dónde" y "Cuando"
+            _buildDropdownCuando(),
+            const SizedBox(height: 16), // Aumenta el espacio aquí para separar más el "Cuando"
+            if (isCuandoExpanded) _buildCalendarDropdown(),
+            _buildOptionButton(Icons.access_time, "Hora", "Inicio - término"),
+            _buildOptionButton(
+                Icons.person, "Para quién", "Agregar niño o niña"),
+            _buildOptionButton(Icons.edit, "Agregar nota", "Opcional"),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(color: Colors.black),
                   ),
                 ),
+                child: Stack(
+                  children: [
+                    Text(
+                      "Solicitar Cuidado",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 2
+                          ..color = Colors.black,
+                      ),
+                    ),
+                    const Text(
+                      "Solicitar Cuidado",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildHeader() {
     return Container(
@@ -73,7 +115,8 @@ class _CuidadoEsporadicoWidgetState extends State<CuidadoEsporadicoWidget> {
           const SizedBox(width: 8),
           const Text(
             "Cuidado Esporádico",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
       ),
@@ -129,6 +172,125 @@ class _CuidadoEsporadicoWidgetState extends State<CuidadoEsporadicoWidget> {
       ],
     );
   }
+
+
+  Widget _buildDropdownCuando() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isCuandoExpanded = !isCuandoExpanded;
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black54),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.calendar_today, color: Colors.black54),
+                const SizedBox(width: 8),
+                Text("Cuándo", style: const TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Text(selectedCuando, style: const TextStyle(color: Colors.grey)),
+          ],
+        ),
+      ),
+    );
+  }
+Widget _buildCalendarDropdown() {
+  return Column(
+    children: [
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black54),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            TableCalendar(
+              focusedDay: DateTime.now(),
+              firstDay: DateTime.utc(2020, 1, 1),
+              lastDay: DateTime.utc(2025, 12, 31),
+              startingDayOfWeek: StartingDayOfWeek.monday, // Inicia desde el lunes
+              selectedDayPredicate: (day) {
+                return markedDates.contains(day); // Marcar fechas específicas
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  selectedDate = selectedDay;
+                });
+              },
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Colors.blue, // Color para el día actual
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.orange, // Color para los días seleccionados
+                  shape: BoxShape.circle,
+                ),
+                outsideDaysVisible: false, // Ocultar los días fuera del mes actual
+              ),
+              calendarBuilders: CalendarBuilders(
+                defaultBuilder: (context, day, focusedDay) {
+                  // Aquí marco los días específicos (4, 5, 6 de febrero de 2025)
+                  if (day.day == 4 && day.month == 2 && day.year == 2025 ||
+                      day.day == 5 && day.month == 2 && day.year == 2025 ||
+                      day.day == 6 && day.month == 2 && day.year == 2025) {
+                    return Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.grey, // Fondo gris para los días marcados
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold, // Negrita para los números
+                          color: Colors.white, // Números en blanco
+                        ),
+                      ),
+                    );
+                  }
+                  return null; // Otros días sin modificaciones
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Aquí agregamos el botón "Siguiente" con ancho completo
+            Container(
+              width: double.infinity, // Esto asegura que el botón ocupe todo el ancho
+              child: ElevatedButton(
+                onPressed: () {
+                  // Acción cuando se presiona el botón
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Fondo negro
+                  foregroundColor: Colors.white, // Texto blanco
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text("Siguiente"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+
 
   Widget _buildOptionButton(IconData icon, String title, String subtitle) {
     return Container(
