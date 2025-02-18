@@ -9,12 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   provider: ^6.0.5
   timeago: ^3.0.2
   table_calendar: ^3.0.10
+  intl: any  # Para manejar la localización
   flutter_svg: ^2.0.10  # Añadir esta línea
   xml: ^6.3.0           # Actualiza la versión de xml
   dotted_border: ^2.1.0
+
+ # flutter_datetime_picker: ^1.5.1  
  # Actualiza a la versión que necesita flutter_svgga esta línea si no está presente
 
 
