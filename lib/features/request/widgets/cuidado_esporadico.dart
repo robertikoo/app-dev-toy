@@ -269,22 +269,45 @@ Widget _buildCalendarDropdown() {
           ),
         ),
         const SizedBox(height: 8),
-        TableCalendar(
-          calendarFormat: CalendarFormat.month,
-          focusedDay: DateTime.now(),
-          firstDay: DateTime.utc(2020, 1, 1),
-          lastDay: DateTime.utc(2025, 12, 31),
-          selectedDayPredicate: (day) => markedDates.contains(day),
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              selectedDate = selectedDay;
-            });
-          },
-          calendarStyle: const CalendarStyle(
-            todayDecoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-            selectedDecoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+       TableCalendar(
+  calendarFormat: CalendarFormat.month,
+  focusedDay: DateTime.now(),
+  firstDay: DateTime.utc(2020, 1, 1),
+  lastDay: DateTime.utc(2025, 12, 31),
+  selectedDayPredicate: (day) => markedDates.contains(day),
+  onDaySelected: (selectedDay, focusedDay) {
+    setState(() {
+      selectedDate = selectedDay;
+    });
+  },
+  calendarStyle: const CalendarStyle(
+    todayDecoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+    selectedDecoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+  ),
+  daysOfWeekStyle: const DaysOfWeekStyle(
+    weekendStyle: TextStyle(color: Colors.red),
+  ),
+  calendarBuilders: CalendarBuilders(
+    defaultBuilder: (context, day, focusedDay) {
+      if ((day.day == 4 || day.day == 5 || day.day == 6) && day.month == 2 && day.year == DateTime.now().year) {
+        return Container(
+          margin: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade400,  // Color gris para los días 4, 5 y 6 de febrero
+            shape: BoxShape.circle,
           ),
-        ),
+          child: Center(
+            child: Text(
+              '${day.day}',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      }
+      return null;
+    },
+  ),
+),
         const SizedBox(height: 16),
         // Expandir el botón a 100% de ancho
         SizedBox(
