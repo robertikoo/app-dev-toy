@@ -16,7 +16,7 @@ class WelcomeHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '¡Hola $userName!',
+            'Bienvenida $userName!',
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -24,7 +24,7 @@ class WelcomeHeader extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            '¿Qué deseas hacer hoy?',
+            '',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey,
