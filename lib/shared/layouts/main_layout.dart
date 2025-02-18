@@ -6,7 +6,7 @@ import '../../features/menu/screens/side_menu_screen.dart';
 class MainLayout extends StatelessWidget {
   final Widget child;
   final PreferredSizeWidget? appBar;
-  
+
   const MainLayout({
     super.key,
     required this.child,
@@ -22,4 +22,4 @@ class MainLayout extends StatelessWidget {
       bottomNavigationBar: const CustomBottomNavBar(),
     );
   }
-} 
+}

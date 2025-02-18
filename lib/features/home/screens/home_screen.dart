@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/welcome_header.dart';
 import '../../../shared/layouts/main_layout.dart';
-import 'package:app/features/request/screens/tipo_cuidado_screen.dart'; // Asegúrate de que la ruta sea correcta
+import '../../request/screens/tipo_cuidado_screen.dart'; // Asegúrate de que la ruta sea correcta
 import '../widgets/search_card.dart';
 import 'package:dotted_border/dotted_border.dart';
 
