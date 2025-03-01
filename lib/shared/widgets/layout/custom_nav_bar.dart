@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
@@ -39,22 +40,46 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
             break;
         }
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: SvgPicture.asset(
+            'assets/menu/home.svg',
+            colorFilter: ColorFilter.mode(
+              _selectedIndex == 0 ? const Color(0xFF02AAB6) : Colors.black,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Inicio',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_month),
-          label: 'Calendar',
+          icon: SvgPicture.asset(
+            'assets/menu/event.svg',
+            colorFilter: ColorFilter.mode(
+              _selectedIndex == 1 ? const Color(0xFF02AAB6) : Colors.black,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Calendario',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
+          icon: SvgPicture.asset(
+            'assets/menu/chat_bubble.svg',
+            colorFilter: ColorFilter.mode(
+              _selectedIndex == 2 ? const Color(0xFF02AAB6) : Colors.black,
+              BlendMode.srcIn,
+            ),
+          ),
           label: 'Chat',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: SvgPicture.asset(
+            'assets/menu/account_circle.svg',
+            colorFilter: ColorFilter.mode(
+              _selectedIndex == 3 ? const Color(0xFF02AAB6) : Colors.black,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Perfil',
         ),
       ],
     );
