@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../shared/layouts/main_layout.dart'; // SE AGREGÓ MainLayout
-
-
 
 class CuidadoProximoScreen extends StatelessWidget {
   const CuidadoProximoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-     return MainLayout(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
         title: SizedBox(
-
           height: 40,
           child: Image.asset('assets/logo_or_15.png', fit: BoxFit.contain),
         ),
@@ -21,7 +17,7 @@ class CuidadoProximoScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Volver a la pantalla anterior (calendar)
+            Navigator.pop(context);
           },
         ),
         actions: [
@@ -31,11 +27,10 @@ class CuidadoProximoScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-
             children: [
               GestureDetector(
                 onTap: () {
@@ -139,7 +134,7 @@ class CuidadoProximoScreen extends StatelessWidget {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

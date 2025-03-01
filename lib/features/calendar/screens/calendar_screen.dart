@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:app/features/calendar/widgets/event.dart'; // Ajusta la importación
 import 'package:app/features/calendar/screens/cuidado_proximo_screen.dart'; // Ajusta la ruta según tu estructura
-import '../../../shared/layouts/main_layout.dart';
 
 class CalendarScreen extends StatelessWidget {
   static const String name = 'calendar_screen';
@@ -12,43 +11,41 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                _FilterButton(text: "Actual", selected: false),
-                _FilterButton(text: "Próximo", selected: true),
-                _FilterButton(text: "Pendiente", selected: false),
-              ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              _FilterButton(text: "Actual", selected: false),
+              _FilterButton(text: "Próximo", selected: true),
+              _FilterButton(text: "Pendiente", selected: false),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: _CalendarWidget(),
+          ),
+          EventCard(
+            title: "Cuidado Emilio",
+            dateRange: "4 - 6 de Febrero",
+            avatar: const CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.grey,
+              child: Icon(Icons.image, color: Colors.white),
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: _CalendarWidget(),
-            ),
-            EventCard(
-              title: "Cuidado Emilio",
-              dateRange: "4 - 6 de Febrero",
-              avatar: const CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.grey,
-                child: Icon(Icons.image, color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CuidadoProximoScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CuidadoProximoScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -73,7 +70,7 @@ class _CalendarWidget extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         todayDecoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.5),
+          color: Color.fromRGBO(0, 0, 255, 0.5),
           shape: BoxShape.circle,
         ),
       ),
