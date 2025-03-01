@@ -1,66 +1,71 @@
 import 'package:flutter/material.dart';
-import '../../../shared/layouts/main_layout.dart';
-import 'package:app/features/home/screens/home_screen.dart'; // Asegúrate de tener esta pantalla importada
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:app/features/request/widgets/cuidado_esporadico.dart';
-
+import 'package:app/features/request/screens/cuidado_permanente_screen.dart';
+import 'package:app/features/request/screens/cuidado_esporadico_screen.dart';
+import '../../../shared/widgets/layout/custom_nav_bar.dart';
 
 class CareTypeSelectionScreen extends StatelessWidget {
   const CareTypeSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Alineado a la izquierda
-          children: [
-            Row(
+    return Scaffold(
+      bottomNavigationBar: const CustomBottomNavBar(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  '¿Qué tipo de cuidado estás buscando?',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                CareTypeButton(
+                  icon: SvgPicture.asset('assets/cuidado_permanente.svg'),
+                  text: 'Cuidado Permanente',
+                  backgroundColor: Colors.white,
+                  hoverColor: Colors.grey[200]!,
+                  textColor: const Color(0xFF4C44D4),
+                  borderColor: const Color(0xFF4C44D4),
                   onPressed: () {
-                    // Navegar hacia la pantalla de inicio
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()), // Aquí navegas a HomeScreen
+                      MaterialPageRoute(builder: (context) => const CuidadoPermanenteScreen()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                CareTypeButton(
+                  icon: SvgPicture.asset('assets/cuidado_esporadico.svg'),
+                  text: 'Cuidado Esporádico',
+                  backgroundColor: const Color(0xFF4C44D4),
+                  hoverColor: const Color(0xFF6A63E0),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CuidadoEsporadicoScreen()),
                     );
                   },
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            const Text(
-              '¿Qué tipo de cuidado estás buscando?',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            CareTypeButton(
-              icon: SvgPicture.asset('assets/cuidado_permanente.svg'),  // Passing SvgPicture
-              text: 'Cuidado Permanente',
-              backgroundColor: Colors.white,
-              hoverColor: Colors.grey[200]!,
-              textColor: const Color(0xFF4C44D4),
-              borderColor: const Color(0xFF4C44D4),
-            ),
-            const SizedBox(height: 16),
-       CareTypeButton(
-  icon: SvgPicture.asset('assets/cuidado_esporadico.svg'),
-  text: 'Cuidado Esporádico',
-  backgroundColor: const Color(0xFF4C44D4),
-  hoverColor: const Color(0xFF6A63E0),
-  textColor: Colors.white,
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CuidadoEsporadicoWidget()),
-    );
-  },
-),
-
-          ],
+          ),
         ),
       ),
     );
@@ -110,7 +115,7 @@ class _CareTypeButtonState extends State<CareTypeButton> {
             border: widget.borderColor != null ? Border.all(color: widget.borderColor!) : null,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Color.fromRGBO(0, 0, 0, 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
