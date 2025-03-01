@@ -5,10 +5,7 @@ import 'features/welcome/screens/welcome_screen.dart';
 import 'features/chat/providers/chat_thread_provider.dart';
 import 'features/chat/providers/chat_provider.dart';
 import 'features/chat/services/chat_service.dart';
-import 'features/home/screens/home_screen.dart';
-import 'features/chat/screens/chattray_screen.dart';
-import 'features/profile/screens/profile_screen.dart';
-import 'features/calendar/screens/calendar_screen.dart';
+import 'shared/layouts/main_layout.dart';
 
 void main() {
   runApp(const MainApp());
@@ -56,10 +53,7 @@ class MainApp extends StatelessWidget {
         initialRoute: '/', // La primera pantalla que se cargará será la WelcomeScreen.
         routes: {
           '/': (context) => const WelcomeScreen(),
-          '/home': (context) => const HomeScreen(),
-          '/calendar': (context) => const CalendarScreen(),
-          '/chat': (context) => const ChatTrayScreen(),
-          '/profile': (context) => const ProfileScreen(),
+          '/home': (context) => const MainLayout(),
         },
       ),
     );
