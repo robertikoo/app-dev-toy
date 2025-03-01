@@ -1,9 +1,8 @@
-import 'package:app/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import '/features/auth/screens/recovery_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -79,12 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    '/home',
+                    (route) => false,
                   );
                 },
-
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 16),

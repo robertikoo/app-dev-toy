@@ -2,7 +2,6 @@ import 'package:app/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../shared/widgets/outlined_button.dart';
-import '../../chat/screens/chattray_screen.dart';
 import '../../../features/auth/screens/register_screen.dart';
 
 
